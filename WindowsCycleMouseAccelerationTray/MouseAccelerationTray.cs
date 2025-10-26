@@ -1,4 +1,8 @@
-﻿namespace WindowsCycleMouseAccelerationTray;
+using System;
+using System.Drawing;
+using System.Windows.Forms;
+
+namespace WindowsCycleMouseAccelerationTray;
 
 internal enum MouseAccelerationState
 {
@@ -34,6 +38,10 @@ public class MouseAccelerationTray : ApplicationContext
         _trayIcon.ContextMenuStrip = contextMenu;
 
         UpdateTrayIcon();
+
+        _trayIcon.ShowBalloonTip(2000, "Mouse Acceleration",
+            "Mouse acceleration is " + (_accelerationState == MouseAccelerationState.Enabled ? "enabled" : "disabled"),
+            ToolTipIcon.Info);
     }
 
     private void TrayIcon_Click(object sender, EventArgs e)

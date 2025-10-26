@@ -3,3 +3,4 @@ icons/
 bin/
 obj/
 *.user
+publish/

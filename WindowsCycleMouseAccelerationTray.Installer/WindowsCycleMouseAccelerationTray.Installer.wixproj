@@ -1,0 +1,16 @@
+﻿<Project Sdk="WixToolset.Sdk/6.0.2">
+    <ItemGroup>
+        <ProjectReference Include="..\WindowsCycleMouseAccelerationTray\WindowsCycleMouseAccelerationTray.csproj"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="WixToolset.UI.wixext" Version="6.0.2"/>
+        <PackageReference Include="WixToolset.Util.wixext" Version="6.0.2"/>
+    </ItemGroup>
+    <PropertyGroup>
+        <OutputPath>$(SolutionDir)publish\</OutputPath>
+        <SuppressIces>ICE2826;ICE2836;ICE2911</SuppressIces>
+        <Version>1.0.0</Version>
+        <DefineConstants>Version=$(Version)</DefineConstants>
+        <OutputName>WindowsCycleMouseAcceleration-$(Version)</OutputName>
+    </PropertyGroup>
+</Project>

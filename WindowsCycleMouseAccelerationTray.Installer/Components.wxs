@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+    <Fragment>
+        <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+            <Component Id="MainExecutable" Guid="30fb64dd-3ff8-41be-98b7-9c645ee52b15">
+                <File Id="MainExeFile" Source="$(var.WindowsCycleMouseAccelerationTray.TargetDir)WindowsCycleMouseAccelerationTray.exe"/>
+                <File Source="$(var.WindowsCycleMouseAccelerationTray.TargetDir)WindowsCycleMouseAccelerationTray.dll"/>
+                <File Source="$(var.WindowsCycleMouseAccelerationTray.TargetDir)WindowsCycleMouseAccelerationTray.runtimeconfig.json"/>
+                <RegistryValue Root="HKLM" Key="Software\Zonni\MouseCycleAccelerationTray" Name="MainInstalled" Type="integer" Value="1" KeyPath="yes"/>
+                <RemoveFile Id="RemoveAllFiles" Name="*.*" On="uninstall"/>
+                <RemoveFolder Id="RemoveINSTALLFOLDER" On="uninstall" Directory="INSTALLFOLDER"/>
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="AutostartComponents" Directory="INSTALLFOLDER">
+            <Component Id="AutostartRegistry" Guid="78bfdfdd-4043-4d52-85a1-444d69c7032f" Condition="AUTOSTART_ENABLED = 1">
+                <RegistryValue Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" Name="MouseCycleAccelerationTray" Value="&quot;[INSTALLFOLDER]WindowsCycleMouseAccelerationTray.exe&quot;" Type="string" KeyPath="yes"/>
+            </Component>
+        </ComponentGroup>
+        <ComponentGroup Id="UninstallerComponents" Directory="ProgramMenuSubFolder">
+            <Component Id="UninstallerShortcut" Guid="a5c8f9e1-2b3d-4e5f-6a7b-8c9d0e1f2a3b">
+                <RegistryValue Root="HKCU" Key="Software\Zonni\MouseCycleAccelerationTray" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
+                <RemoveFolder Id="RemoveProgramMenuFolder" On="uninstall"/>
+                <Shortcut Id="UninstallShortcut" Name="Uninstall Mouse Cycle Acceleration Tray" Description="Uninstalls Mouse Cycle Acceleration Tray" Target="[SystemFolder]msiexec.exe" Arguments="/x [ProductCode]"/>
+            </Component>
+        </ComponentGroup>
+    </Fragment>
+</Wix>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs" xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+    <Package Name="Mouse Cycle Acceleration Tray" Manufacturer="Zonni" Version="$(Version)" UpgradeCode="05f9675c-f295-4ed3-9d9e-5cdfde4d4b70">
+        <CustomAction Id="LaunchApplication" FileRef="MainExeFile" ExeCommand="" Execute="deferred" Impersonate="yes" Return="asyncNoWait"/>
+        <CustomAction Id="KillProcess" Directory="SystemFolder" ExeCommand="powershell.exe -WindowStyle Hidden -Command &quot;Stop-Process -Name WindowsCycleMouseAccelerationTray -Force -ErrorAction SilentlyContinue&quot;" Execute="immediate" Return="ignore"/>
+        <Feature Id="Main" Title="Mouse Cycle Acceleration Tray" Level="1">
+            <ComponentGroupRef Id="ProductComponents"/>
+            <ComponentGroupRef Id="AutostartComponents"/>
+            <ComponentGroupRef Id="UninstallerComponents"/>
+        </Feature>
+        <InstallExecuteSequence>
+            <Custom Action="LaunchApplication" Before="InstallFinalize" Condition="NOT Installed AND LAUNCH_AFTER_INSTALL = &quot;0&quot;"/>
+            <Custom Action="KillProcess" Before="InstallValidate" Condition="Installed OR REINSTALL OR UPGRADINGPRODUCTCODE"/>
+        </InstallExecuteSequence>
+        <MediaTemplate EmbedCab="yes" CabinetTemplate="data{0}.cab" />
+        <MajorUpgrade DowngradeErrorMessage="!(loc.DowngradeError)"/>
+        <Property Id="AUTOSTART_ENABLED" Value="0"/>
+        <Property Id="LAUNCH_AFTER_INSTALL" Value="0"/>
+        <Property Id="WIXUI_INSTALLDIR" Value="INSTALLFOLDER"/>
+        <SetProperty Id="AUTOSTART_ENABLED" Value="1" Before="AppSearch" Condition="UILevel &lt;= 3"/>
+        <SetProperty Id="LAUNCH_AFTER_INSTALL" Value="1" Before="AppSearch" Condition="UILevel &lt;= 3"/>
+        <UI>
+            <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="OptionsDlg" Order="2" Condition="1"/>
+            <Publish Dialog="WelcomeDlg" Control="Next" Event="NewDialog" Value="LicenseAgreementDlg" Order="3" Condition="0"/>
+            <Publish Dialog="OptionsDlg" Control="Next" Event="NewDialog" Value="InstallDirDlg" Condition="1"/>
+            <Publish Dialog="OptionsDlg" Control="Back" Event="NewDialog" Value="WelcomeDlg" Condition="1"/>
+            <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="OptionsDlg" Order="2" Condition="1"/>
+            <Publish Dialog="InstallDirDlg" Control="Back" Event="NewDialog" Value="LicenseAgreementDlg" Order="3" Condition="0"/>
+        </UI>
+        <ui:WixUI Id="WixUI_InstallDir"/>
+    </Package>
+</Wix>

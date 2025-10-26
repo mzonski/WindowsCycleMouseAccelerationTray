@@ -18,7 +18,7 @@ public readonly record struct MouseAccelerationSettings
     public static MouseAccelerationSettings CreateDisabled()
         => new(0, 0, 0);
 
-    public int[] ToArray() => new[] { Threshold1, Threshold2, EnabledFlag };
+    public int[] ToArray() => [Threshold1, Threshold2, EnabledFlag];
 
     public override string ToString()
         => $"[{Threshold1}, {Threshold2}, {EnabledFlag}] (Enabled: {IsEnabled})";
